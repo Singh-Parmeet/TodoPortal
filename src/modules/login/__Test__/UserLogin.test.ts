@@ -41,19 +41,19 @@ describe('For user endpoints', () => {
                     password: 'Training@123',
                 });
             expect(res.status).toBe(200);
-            expect(res.body.data.token).not.toBeUndefined();
+            expect(res.body.data.data.token).not.toBeUndefined();
         });
     });
     describe('Negative Test Cases', () => {
         test('Negative Login Case', async () => {
             const res = await req.post('/api/users/login')
-                .send({ });
-            expect(res.status).toBe(400);
+            .send({});
+            expect(res.body.status).toBe(400);
         });
         test('Negative Register Case', async () => {
             const res = await req.post('/api/users/registration')
                 .send({});
-            expect(res.status).toBe(400);
+            expect(res.body.status).toBe(400);
         });
     });
 });

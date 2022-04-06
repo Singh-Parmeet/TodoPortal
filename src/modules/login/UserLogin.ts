@@ -9,10 +9,11 @@ class UserLogin {
         const userRepository: UserRepository = new UserRepository();
         const validateEmail = await userRepository.findOne({ email: data.email });
         const match = await bcrypt.compare(data.password, validateEmail.password);
-        if (!match) {
-            logger.debug('Invalid Credential');
+        if (match) {
+            return validateEmail;
         }
-        return validateEmail;
+        logger.debug('Invalid Credential');
+        throw new Error('Invalid Credential');
     };
 
     public static login = async (req, res) => {

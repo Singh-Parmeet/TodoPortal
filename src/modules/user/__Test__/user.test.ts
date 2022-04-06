@@ -31,7 +31,8 @@ describe('For user endpoints', () => {
                 email: 'Anu@successive.tech',
                 password: 'Training@123',
             });
-        token = res.body.data.token;
+
+        token = res.body.data.data.token;
     });
     //* *** Positive Test Cases ****/
 
