@@ -15,7 +15,7 @@ export const configurations: IConfig = Object.freeze({
     port: process.env.PORT,
     redisPort: process.env.REDIS_PORT,
     redisHost: process.env.REDIS_HOST,
-    secret: process.env.SECREAT_KEY,
+    secret: process.env.SECRET_KEY,
     swaggerDefinition: {
         openapi: '3.0.0',
         basePath: constants.API_PREFIX,
