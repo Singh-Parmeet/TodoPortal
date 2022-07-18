@@ -67,8 +67,7 @@ describe('For user endpoints', () => {
 
         test('delete todo', async () => {
             const res = await req
-                .delete('/api/todo')
-                .send({ id: ID2 });
+                .delete(`/api/todo/${ID2}`);
             expect(res.status).toBe(200);
             expect(res.body.message).toBe('Record deleted');
         });
@@ -105,9 +104,8 @@ describe('For user endpoints', () => {
 
         test('negative delete todo', async () => {
             const res = await req
-                .delete('/api/todo')
-                .send({ });
-            expect(res.status).toBe(400);
+                .delete(`/api/todo/${''}`);
+            expect(res.status).toBe(404);
         });
     });
     afterAll(async () => {

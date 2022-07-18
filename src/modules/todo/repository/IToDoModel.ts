@@ -1,6 +1,6 @@
-import IVersionableDocument from '../../../libs/versionable/IVersionableDocument';
+import IBaseDocument from '../../../libs/BaseRepo/IBaseDocument';
 
-interface IToDoModel extends IVersionableDocument {
+interface IToDoModel extends IBaseDocument {
   id: string;
   title: string;
   description: string;

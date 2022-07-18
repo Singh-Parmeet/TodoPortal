@@ -1,20 +1,15 @@
-import { SystemResponse } from 'response-handler';
 import * as bcrypt from 'bcrypt';
+import { SystemResponse } from '../../libs/response-handler';
 import IUser from './IUser';
 import { Nullable } from '../../libs/nullable';
-import UserService from './UserService';
 import CacheManager from '../../libs/cache/CacheManager';
 import patternMatecherhelper from './helper/PatternMatecherHelper';
 import * as constants from '../../config/constants';
+import { Services } from '../../services/constants';
+import { NotificationService } from '../../config/constants';
 
 class UserController {
-    private constructor() {
-        this.userService = new UserService();
-    }
-
     private static instance;
-
-    private userService: UserService;
 
     public static getInstance() {
         if (!UserController.instance) {
@@ -24,17 +19,15 @@ class UserController {
         return UserController.instance;
     }
 
-    /**
-   * Get user list.
-   * @property {number} skip - Number of messages to be skipped.
-   * @property {number} limit - Limit number of messages to be returned.
-   * @returns {IUser[]}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public list = async (req, res, next): Promise<IUser[]> => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
             const { limit, skip } = req.query;
-            const result = await this.userService.list(limit, skip);
+
+            // for user service - fetch
+            const result = await moduleService.list(limit, skip);
             if (!result.length) {
                 logger.debug({ message: 'Data not found', option: [], data: [] });
 
@@ -48,34 +41,36 @@ class UserController {
         }
     };
 
-    /**
-   * Create new user
-   * @property {string} first_name - The first_name of user.
-   * @property {string} last_name - The last_name of user.
-   * @returns {IUser}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public create = async (req, res) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
-            const result = await this.userService.create(req.body);
+            const {
+                email, password, first_name: firstName, last_name: lastName,
+            } = req.body;
+            const hashPassword = await bcrypt.hash(password, constants.BCRYPT_SALT_ROUNDS);
+            const result = await moduleService.create({
+                email,
+                password: hashPassword,
+                first_name: firstName,
+                last_name: lastName,
+            });
             logger.info({ messgae: 'User Created Successfully', data: [], option: [] });
             return res.send(SystemResponse.success('User created', result));
         } catch (err) {
             logger.error({ message: err.message, option: [{ Error: err.stack }] });
-            return res.send(SystemResponse.internalServerError);
+            return res.send(SystemResponse.internalServerError('Failed', err));
         }
     };
 
-    /**
-   * Get user.
-   * @property {string} id - The id of user.
-   * @returns {IUser}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public get = async (req, res): Promise<Nullable<IUser>> => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
             const { id } = req.params;
-            const result = await this.userService.get({ id });
+            const result = await moduleService.get({ id });
             logger.info({ messgae: 'User found', data: [] });
             return res.send(SystemResponse.success('User found', result));
         } catch (err) {
@@ -84,20 +79,13 @@ class UserController {
         }
     };
 
-    /**
-   * Update the user
-   * @param {string} id - The id of the user.
-   * @param {string} name - The updated name of user.
-   * @returns {IUser}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public update = async (req, res) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
-            const { id, ...rest } = req.body;
-            const result = await this.userService.update({
-                ...rest,
-                id,
-            });
+            const data = req.body;
+            const result = await moduleService.update(data.id, data);
             logger.info({ messgae: 'User updated', data: [] });
             return res.send(SystemResponse.success('User updated successfully', result));
         } catch (err) {
@@ -106,15 +94,13 @@ class UserController {
         }
     };
 
-    /**
-   * Delete the user
-   * @param {string} id - The id of the user.
-   */
+    // eslint-disable-next-line class-methods-use-this
     public delete = async (req, res) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
             const { id } = req.body;
-            const result = await this.userService.delete({
+            const result = await moduleService.delete({
                 id,
             });
             logger.info({ messgae: 'User deleted', data: [], option: [] });
@@ -131,7 +117,7 @@ class UserController {
             value: req.body.value,
             key: req.body.key,
         };
-        CacheManager.setEx(result.key, 3600, JSON.stringify(result.value), '');
+        await CacheManager.setEx(result.key, 3600, JSON.stringify(result.value), '');
         return res.send(SystemResponse.success('Redis Value set', result.value));
     }
 
@@ -142,22 +128,49 @@ class UserController {
         res.send(SystemResponse.success('Redis Value get', patternMatecherhelper(getResponse)));
     }
 
+    // eslint-disable-next-line class-methods-use-this
     public registration = async (req, res, next) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
+        const availableServices = services.get(Services.NOTIFICATION_SERVICE);
+
         try {
-            const { email, password } = req.body;
-            bcrypt.genSalt(constants.BCRYPT_SALT_ROUNDS, (_err, salt) => {
-                bcrypt.hash(password, salt, async (err: any, hash) => {
-                    const result = await this.userService.create(
-                        { email, password: hash },
-                    );
-                    logger.info({ messgae: 'User registered', data: [], option: [] });
-                    return res.send(SystemResponse.success('User register successfully', result));
-                });
+            const { email, password, name } = req.body;
+            const hashPassword = await bcrypt.hash(password, constants.BCRYPT_SALT_ROUNDS);
+            // third party services check
+            const response = await availableServices
+                .initializedService
+                .get(NotificationService.templateId.registration);
+            const result = await moduleService.create({
+                email,
+                password: hashPassword,
+                first_name: name,
             });
-            return 'Registration Completed';
+            if (response.isAxiosError === true) {
+                return await res.send(
+                    SystemResponse.badRequestError(
+                        'Notification Service Unavailable, Error sending notification mail',
+                        `${response.response ? response.response.data.error : response.response}, ${response.response ? response.response.data.message : response.response}`,
+                    ),
+                );
+            }
+
+            logger.info({
+                message: 'User registered',
+                data: [],
+                option: [],
+            });
+            return res.send(
+                SystemResponse.success(
+                    'User registered successfully!',
+                    result,
+                ),
+            );
         } catch (err) {
-            logger.error({ message: err.message, option: [{ Error: err.stack }] });
+            logger.error({
+                message: err.message,
+                option: [{ Error: err.stack }],
+            });
             return next(err);
         }
     };

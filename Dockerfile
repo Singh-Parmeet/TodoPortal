@@ -1,5 +1,6 @@
-# Use latest node version 10.x
-FROM node:alpine
+# Use node version 14.x
+FROM node:14-alpine
+
 # create app directory in container
 RUN mkdir -p /app
 
@@ -7,12 +8,13 @@ RUN mkdir -p /app
 WORKDIR /app
 
 # copy all file from current dir to /app in container
-COPY ./js-express-boilerplate /app/
+COPY . /app/
 
-RUN npm install
-
-# expose port 9000
+# expose port 7000
 EXPOSE 7000
 
+# npm build
+RUN npm run build
+
 # cmd to start service
-CMD [ "npm run start"]
+CMD [ "npm", "start" ]

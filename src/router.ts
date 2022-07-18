@@ -1,7 +1,11 @@
 import { Router } from 'express';
-import { SystemResponse } from 'response-handler';
+import { SystemResponse } from './libs/response-handler';
 import userRouter from './modules/user/router';
 import todoRouter from './modules/todo/router';
+import initServiceMiddleware from './middleware/initServiceMiddleware';
+import { Services } from './services/constants';
+import UserService from './modules/user/UserService';
+import ToDoService from './modules/todo/ToDoService';
 
 const appInfo = require('../package.json');
 
@@ -61,8 +65,8 @@ router.get('/health-check', (req, res) => {
     res.send('I am OK');
 });
 
-router.use('/users', userRouter);
+router.use('/users', initServiceMiddleware([Services.NOTIFICATION_SERVICE], new UserService()), userRouter);
 
-router.use('/todo', todoRouter);
+router.use('/todo', initServiceMiddleware([], new ToDoService()), todoRouter);
 
 export default router;

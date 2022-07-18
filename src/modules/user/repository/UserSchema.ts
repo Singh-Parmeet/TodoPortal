@@ -1,6 +1,6 @@
-import VersionableSchema from '../../../libs/versionable/VersionableSchema';
+import BaseSchema from '../../../libs/BaseRepo/BaseSchema';
 
-export default class UserSchema extends VersionableSchema {
+export default class UserSchema extends BaseSchema {
     constructor(options: any) {
         const baseSchema = {
             first_name: {

@@ -1,6 +1,7 @@
 # Overview
 
 Express-Boilerplate is a basic application from where a developer can start a new service. It showcase all (or almost all) of the features or say best practices that we can use in an API.
+
 # Technology Stack
  * [Node.js](https://nodejs.org) server.
  * [MongoDB](https://docs.mongodb.com/) database.
@@ -9,8 +10,10 @@ Express-Boilerplate is a basic application from where a developer can start a ne
  * [Express](https://expressjs.com/) node.js framework for building REST APIs
  * [Jest](https://jestjs.io/docs/en/getting-started) Jest is used to test Javascript frameworks
  * [Supertest](https://www.npmjs.com/package/supertest) provide a high-level abstraction for testing HTTP
+
 # Getting Started - Setup
 This section is for getting started with service on your development environment.
+
 1. **Clone the repository**
   ```
   git clone <link>
@@ -19,10 +22,18 @@ This section is for getting started with service on your development environment
   ```
   npm install
    ``` 
+   if recieving any optional dependency warnings then use this :
+
+   ```
+  npm install --no-optional
+   ```
+
   It will prompt for your github access token in order to install our inbuilt package.
-3. **Change  envsample to .env** 
-  - Put all your constant, credentials, and path etc here.
+  
+3. **Change  envsample to .env**: Put all your constant, credentials, and path etc here.
+
 # Key Features
+
 1. **User Module** This module is based on the user data with CRUD operation and user data is stored in MongoDB Collection.
   * `Crud Operation:` User Module contain total 5 API's 
   - GET(List) : It is used to fetch all the user data from the collection.
@@ -36,12 +47,24 @@ This section is for getting started with service on your development environment
   * `Redis` Redis is an open-source (BSD licensed), in-memory data structure store used as a database, and cache.
   - SetRedis Value : It is used to set the Redis value in the cache memory.
   - GetRedis Value : It is used to get the Redis value in the cache memory.
+
 2. **ToDO Module** This module is based on the ToDO list with CRUD operation and list is stored in MongoDB collection.  
   * `CRUD Operation:` ToDo Module contain total 5 API's.
-3. **InBuilt Package** We have two custom npm package which is response-handler and logger.
-  - Response-handler :It is a basic inbuilt package used to handle the informative messages. It handle all (or almost all) of the responses. 
-  - logger : It is a basic inbuilt package used to handle the system logs. It handle all (or almost all) of the logs. 
+
+3. **InBuilt Package** We have three custom npm package which is response-handler, comm-handler and logger.
+
+  - Response-handler: It is a basic inbuilt package used to handle the informative messages. It handle all (or almost all) of the responses. 
+
+  - logger: It is a basic inbuilt package used to handle the system logs. It handle all (or almost all) of the logs.
+  
+  - comm-handler: It is a basic inbuilt package used to handle/call api end points.  
+
 4. **Swagger** Swagger UI to generate interactive API documentation that lets your users try out the API calls directly in the browser.
+
+5. **Services**  These services act as a middleware which initiate different services for a particular module. We can use these services as microservice for our application.
+
+6. **Profiling** Profiling help us to diagnose our application performance and guides you towards more specialized tools to look deeper into your specific issues.
+
 # Running the app
  ```
  npm run start
@@ -67,8 +90,24 @@ We also use [Eslint](https://github.com/eslint/eslint) with Typescript Standard 
   ```
   npm run lint:fix
   ```
+# Profiling
+We use Profiling with [Clinicjs](https://clinicjs.org/documentation/) in this project.
+- To run profiling
+    ```
+    npm run profile
+    ```
+- To check performance of a particular API
+    ```
+    clinic doctor --autocannon [ -m GET /api/todo ] -- node dist/src/index.js
+    ```
+- To check the performance with a particular load on the application or on a API
+    ```
+    clinic doctor --autocannon [ -c 100 -a 200 -m GET /api/todo ] -- node dist/src/index.js
+    ```
+
 # CI Integration
   - TODO
+
 ### Guidelines - must be followed strictly
   - Developer must enable pre-commit and pre-push hooks
   ```
@@ -77,9 +116,6 @@ We also use [Eslint](https://github.com/eslint/eslint) with Typescript Standard 
   ```
   npx husky add .husky/pre-push "npm run lint"
   ```
-  - Developer must commit his tasks at the end of the day, even if the task has not been completed
-  - Developer must create a pull request at the end of day, even if the task has not been completed, with a SUFFIX in subject name as `[WIP]:` e.g 
-  `[WIP]: Setup of Jest with first unit test`
 ### IDE
 Our preferred IDE is `VSCODE`
 Please enable following plugins for your editor:

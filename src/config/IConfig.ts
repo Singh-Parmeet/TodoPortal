@@ -1,4 +1,4 @@
-import { ISwaggerDefinition } from '../documentation/swagger/Swagger';
+import { ISwaggerDefinition } from '../libs/documentation/swagger/Swagger';
 
 export interface IConfig extends ISwaggerDefinition {
   env: string;
@@ -8,7 +8,8 @@ export interface IConfig extends ISwaggerDefinition {
   mongo: string;
   mongooseDebug: boolean;
   swaggerUrl: string;
-  redisPort: string;
   redisHost: string;
-  secret:string;
+  redisPort: number;
+  secret: string;
+  notificationServiceUrl: string;
 }

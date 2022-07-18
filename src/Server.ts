@@ -3,13 +3,13 @@ import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as methodOverride from 'method-override';
-import { errorHandler } from 'response-handler';
-import { createLogger, enableLoggerInstance, enableDebugger } from 'logger';
+import { errorHandler } from './libs/response-handler';
+import { createLogger, enableLoggerInstance, enableDebugger } from './libs/logger';
 import loggerConfig from './config/LoggerConfig';
 import { EnvVars } from './config/constants';
 import Database from './libs/database/Database';
 import notFoundRoute from './libs/routes';
-import Swagger from './documentation/swagger/Swagger';
+import Swagger from './libs/documentation/swagger/Swagger';
 import router from './router';
 import CacheManager from './libs/cache/CacheManager';
 
@@ -72,11 +72,8 @@ export default class Server {
         } = this.config;
         try {
             CacheManager.open();
-
             await Database.open(mongoUri);
-            this.app.listen(port, (err) => {
-                if (err) { throw Error; }
-            });
+            this.app.listen(port);
         } catch (e) {
             return e;
         }
@@ -111,7 +108,7 @@ export default class Server {
         this.app.use(
             cors({
                 optionsSuccessStatus: 200,
-                origin: JSON.parse(this.config.corsOrigin),
+                origin: this.config.corsOrigin,
             }),
         );
     }

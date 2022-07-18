@@ -1,11 +1,18 @@
 import * as redis from 'redis';
-import { SystemResponse } from 'response-handler';
+import { SystemResponse } from '../response-handler';
+import configurations from '../../config/configuration';
 
 export interface ICacheConfig {
     redisHost: string;
-    redisPort: string;
+    redisPort: Number;
 }
-const redisClient = redis.createClient();
+
+const redisClient = redis.createClient({
+    socket: {
+        host: configurations.redisHost,
+        port: configurations.redisPort,
+    },
+});
 
 export default class CacheManager {
     public static open() {

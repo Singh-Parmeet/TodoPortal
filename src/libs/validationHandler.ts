@@ -1,5 +1,5 @@
 import { checkSchema, validationResult } from 'express-validator';
-import { SystemResponse } from 'response-handler';
+import { SystemResponse } from './response-handler';
 
 const validationHandler = (validator) => [
   checkSchema(validator) as any,

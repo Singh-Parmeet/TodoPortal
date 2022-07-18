@@ -1,6 +1,6 @@
-import VersionableSchema from '../../../libs/versionable/VersionableSchema';
+import BaseSchema from '../../../libs/BaseRepo/BaseSchema';
 
-export default class ToDoSchema extends VersionableSchema {
+export default class ToDoSchema extends BaseSchema {
     constructor(options: any) {
         const baseSchema = {
             title: {

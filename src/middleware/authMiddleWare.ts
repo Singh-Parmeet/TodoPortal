@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
-import { SystemResponse } from 'response-handler';
 import { NextFunction, Request, Response } from 'express';
+import { SystemResponse } from '../libs/response-handler';
 import config from '../config/configuration';
 
 function authMiddleWare(req: Request, res: Response, next: NextFunction) {

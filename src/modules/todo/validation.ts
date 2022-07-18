@@ -26,7 +26,7 @@ export default Object.freeze({
                 options: (id: string) => isValidObjectId(id),
             },
             errorMessage: 'Bad ID format',
-            in: ['body'],
+            in: ['param'],
         },
     },
 

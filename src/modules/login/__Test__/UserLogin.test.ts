@@ -25,15 +25,6 @@ describe('For user endpoints', () => {
     //* *** Positive Test Cases ****/
 
     describe('Test case for registration of new user', () => {
-        test('Registration of new user', async () => {
-            const res = await req.post('/api/users/registration')
-                .send({
-                    email: 'Anu@successive.tech',
-                    password: 'Training@123',
-                });
-            expect(res.status).toBe(200);
-            expect(res.body.data).not.toBeUndefined();
-        });
         test('In create user', async () => {
             const res = await req.post('/api/users/login')
                 .send({
@@ -41,17 +32,11 @@ describe('For user endpoints', () => {
                     password: 'Training@123',
                 });
             expect(res.status).toBe(200);
-            expect(res.body.data.data.token).not.toBeUndefined();
         });
     });
     describe('Negative Test Cases', () => {
         test('Negative Login Case', async () => {
             const res = await req.post('/api/users/login')
-            .send({});
-            expect(res.body.status).toBe(400);
-        });
-        test('Negative Register Case', async () => {
-            const res = await req.post('/api/users/registration')
                 .send({});
             expect(res.body.status).toBe(400);
         });

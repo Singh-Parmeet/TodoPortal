@@ -1,6 +1,6 @@
-import IVersionableDocument from '../../../libs/versionable/IVersionableDocument';
+import IBaseDocument from '../../../libs/BaseRepo/IBaseDocument';
 
-interface IUserModel extends IVersionableDocument {
+interface IUserModel extends IBaseDocument {
   id: string;
   first_name: string;
   last_name: string;

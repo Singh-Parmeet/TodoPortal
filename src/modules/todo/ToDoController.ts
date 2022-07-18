@@ -1,16 +1,9 @@
-import { SystemResponse } from 'response-handler';
+import { SystemResponse } from '../../libs/response-handler';
 import IToDo from './IToDo';
 import { Nullable } from '../../libs/nullable';
-import ToDoService from './ToDoService';
 
 class ToDoController {
     private static instance;
-
-    private todoService: ToDoService;
-
-    private constructor() {
-        this.todoService = new ToDoService();
-    }
 
     public static getInstance() {
         if (!ToDoController.instance) {
@@ -20,16 +13,13 @@ class ToDoController {
         return ToDoController.instance;
     }
 
-    /**
-   * @property {number} skip - Number of records to be skipped.
-   * @property {number} limit - Limit number of records to be returned.
-   * @returns {IToDo[]}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public list = async (req, res): Promise<IToDo[]> => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
             const { limit, skip } = req.query;
-            const result = await this.todoService.list(
+            const result = await moduleService.list(
                 limit,
                 skip,
             );
@@ -45,15 +35,12 @@ class ToDoController {
         }
     };
 
-    /**
-   * @property {string} title - Title.
-   * @property {string} description - The description.
-   * @returns {IToDo}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public create = async (req, res) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
-            const result = await this.todoService.create(
+            const result = await moduleService.create(
                 req.body,
             );
             logger.info({ messgae: 'Record Added Successfully', data: [], option: [] });
@@ -66,15 +53,13 @@ class ToDoController {
         }
     };
 
-    /**
-   * @property {string} id - The id of record.
-   * @returns {IToDo}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public get = async (req, res): Promise<Nullable<IToDo>> => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
             const { id } = req.params;
-            const result = await this.todoService.get({
+            const result = await moduleService.get({
                 id,
             });
             logger.info({ messgae: 'ToDo record found', data: [] });
@@ -85,22 +70,13 @@ class ToDoController {
         }
     };
 
-    /**
-   * @param {string} id - The id of the record.
-   * @param {string} title - The updated title of record.
-   * @param {string} description - The updated description of record.
-   * @param {string} status - The updated status of record.
-
-   * @returns {IToDo}
-   */
+    // eslint-disable-next-line class-methods-use-this
     public update = async (req, res) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
-            const { id, ...rest } = req.body;
-            const result = await this.todoService.update({
-                ...rest,
-                id,
-            });
+            const data = req.body;
+            const result = await moduleService.update(data.id, data);
             logger.info({ messgae: 'Record updated', data: [] });
             return res.send(
                 SystemResponse.success('Record updated successfully', result),
@@ -111,14 +87,13 @@ class ToDoController {
         }
     };
 
-    /**
-   * @param {string} id - The id of the record.
-   */
+    // eslint-disable-next-line class-methods-use-this
     public delete = async (req, res) => {
-        const { logger } = res.locals;
+        const { locals: { logger }, services } = res;
+        const { moduleService } = services;
         try {
-            const { id } = req.body;
-            const result = await this.todoService.delete({
+            const { id } = req.param;
+            const result = await moduleService.delete({
                 id,
             });
             logger.info({ messgae: 'Record deleted', data: [], option: [] });

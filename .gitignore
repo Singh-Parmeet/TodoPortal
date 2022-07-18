@@ -2,8 +2,10 @@ dist
 node_modules
 .env
 .husky
-package-lock.json
 log
 sonar-project.properties
 .scannerwork
 coverage
+.vscode
+.clinic
+.npmrc

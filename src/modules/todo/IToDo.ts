@@ -1,4 +1,4 @@
-import IEntity from '../../entities/IEntity';
+import IEntity from '../../libs/entities/IEntity';
 
 interface IToDo extends IEntity {
   title: string;

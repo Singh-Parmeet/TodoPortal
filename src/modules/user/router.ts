@@ -246,6 +246,9 @@ router.route('/')
 router.route('/login')
     .post(UserLogin.login);
 
+router.route('/forgotPassword')
+    .post(UserLogin.forgotPassword);
+
 /**
  * @swagger
  * /api/users/registration:

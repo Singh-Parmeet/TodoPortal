@@ -181,7 +181,7 @@ router.route('/')
  *                  200:
  *                      description: Record deleted succesfully
  */
-router.route('/')
+router.route('/:id')
     .delete(
         validationHandler(validation.delete as any),
         controller.delete,

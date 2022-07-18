@@ -13,19 +13,21 @@ describe('For user endpoints', () => {
     let ID;
     let ID2;
     let id;
+    const pass = 'Training@node';
 
     beforeAll(async () => {
         const app = await server.bootstrap();
         req = supertest(app);
         mongoServer = await MongoMemoryServer.create();
         mongoUri = mongoServer.getUri();
-
         await Database.open(mongoUri);
         await req.post('/api/users/registration')
             .send({
                 email: 'Anu@successive.tech',
                 password: 'Training@123',
+                name: 'Anuj',
             });
+
         const res = await req.post('/api/users/login')
             .send({
                 email: 'Anu@successive.tech',
@@ -42,6 +44,7 @@ describe('For user endpoints', () => {
                 first_name: 'Trainee',
                 last_name: 'Team',
                 email: 'Trainee@gmail.com',
+                password: pass,
             };
             const res = await req
                 .post('/api/users/')

@@ -1,3 +1,4 @@
+import * as mongoose from 'mongoose';
 import IUser from './IUser';
 import UserRepository from './repository/UserRepository';
 
@@ -8,52 +9,24 @@ class UserService {
         this.userRepository = new UserRepository();
     }
 
-    /**
-   * Get user list
-   * @param {number} limit - Limit number of records to be returned.
-   * @param {number} skip - Number of records to be skipped.
-   * @returns {User[]}
-   */
-    public async list(limit: number, skip: number): Promise<IUser[]> {
-        return this.userRepository.list({ limit, skip });
+    public async list(limit: number, skip: number, projection?): Promise<IUser[]> {
+        return this.userRepository.list({ limit, skip }, projection);
     }
 
-    /**
-   * Create new user
-   * @param {string} firstname - The firstname of the user.
-   * @param {string} lastname - The lastname of the user.
-   * @returns {User}
-   */
     public async create(query): Promise<IUser> {
         return this.userRepository.create(query);
     }
 
-    /**
-   * Get user
-   * @param {string} id - The id of user.
-   * @returns {User}
-   */
     public async get(query): Promise<IUser> {
         const { id } = query;
         return this.userRepository.get({ id });
     }
 
-    /**
-   * Update user
-   * @param {string} firstname - The firstname of user.
-   * @param {string} originalId - The originalId of user.
-   * @returns {User}
-   */
-    public async update(query): Promise<IUser> {
-        return this.userRepository.update(query);
+    public async update(option: string, query): Promise<IUser> {
+        return this.userRepository.update(option, query);
     }
 
-    /**
-   * Delete user
-   * @param {string} id - The id of user.
-   * @returns {User}
-   */
-    public async delete(query): Promise<IUser> {
+    public async delete(query): Promise<mongoose.UpdateQuery<IUser>> {
         const { id } = query;
         return this.userRepository.delete({
             id,
