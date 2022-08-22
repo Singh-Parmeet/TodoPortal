@@ -14,7 +14,7 @@ COPY . /app/
 EXPOSE 7000
 
 # npm build
-RUN npm run build
+RUN npm install
 
 # cmd to start service
 CMD [ "npm", "start" ]
