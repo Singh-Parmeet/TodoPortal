@@ -19,7 +19,7 @@ spec:
       - name: regcred
       containers:
       - name: starter-kit
-        image: sdobhal369/boilerplate:latest
+        image: siddhanta28/boilerplate:latest
         env:          
         - name: NODE_ENV
           value: "dev"
