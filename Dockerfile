@@ -18,6 +18,3 @@ RUN npm install
 
 # cmd to start service
 CMD [ "npm", "start" ]
-
-
-
