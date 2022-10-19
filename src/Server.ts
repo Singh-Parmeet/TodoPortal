@@ -68,12 +68,14 @@ export default class Server {
     public async run() {
     // open Database & listen on port config.port
         const {
-            port, mongoUri,
+            port, mongoUri, env,
         } = this.config;
         try {
             CacheManager.open();
             await Database.open(mongoUri);
             this.app.listen(port);
+            // eslint-disable-next-line no-console
+            console.log(`|| App is running at port '${port}' in '${env}' mode ||`);
         } catch (e) {
             return e;
         }
