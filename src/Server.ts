@@ -71,7 +71,7 @@ export default class Server {
             port, mongoUri, env,
         } = this.config;
         try {
-            CacheManager.open();
+            // CacheManager.open();
             await Database.open(mongoUri);
             this.app.listen(port);
             // eslint-disable-next-line no-console
