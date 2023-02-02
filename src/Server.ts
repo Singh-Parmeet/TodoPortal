@@ -12,7 +12,7 @@ import notFoundRoute from './libs/routes';
 import Swagger from './libs/documentation/swagger/Swagger';
 import router from './router';
 import CacheManager from './libs/cache/CacheManager';
-
+//To Do Demo description
 export default class Server {
     private app: express.Express;
 
@@ -134,6 +134,7 @@ export default class Server {
     /**
    * Initialize Swagger
    */
+    // To do Need to optimize this function
     private initSwagger() {
         const { swaggerDefinition, swaggerUrl } = this.config;
 
