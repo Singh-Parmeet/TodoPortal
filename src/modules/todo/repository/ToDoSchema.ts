@@ -1,3 +1,4 @@
+import { Schema } from 'mongoose';
 import BaseSchema from '../../../libs/BaseRepo/BaseSchema';
 
 export default class ToDoSchema extends BaseSchema {
@@ -6,9 +7,7 @@ export default class ToDoSchema extends BaseSchema {
             title: {
                 type: String,
             },
-            description: {
-                type: String,
-            },
+            description: Schema.Types.Mixed,
             status: {
                 type: String,
                 default: 'To Do',

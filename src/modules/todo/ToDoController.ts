@@ -1,9 +1,7 @@
 /* eslint-disable consistent-return */
 import * as cron from 'node-cron';
-import { pipeline, Readable, Writable } from 'stream';
-import * as path from 'path';
+import { pipeline } from 'stream';
 import * as fs from 'fs';
-import * as archiver from 'archiver';
 import { SystemResponse } from '../../libs/response-handler';
 import IToDo from './IToDo';
 import { Nullable } from '../../libs/nullable';
@@ -131,7 +129,6 @@ class ToDoController {
         try {
             const readableStream = fs.createReadStream('image/Image_created_with_a_mobile_phone.png.webp');
             const writeableStream = fs.createWriteStream('profileImage/profile.png');
-
 
             pipeline(readableStream, writeableStream, (err) => {
                 console.error(err);
