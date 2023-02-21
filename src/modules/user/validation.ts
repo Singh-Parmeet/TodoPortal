@@ -1,24 +1,24 @@
 import { isValidObjectId } from '../../libs/MongoUtils';
 
 export default Object.freeze({
-    create: {
-        first_name: {
-            errorMessage: 'First Name is wrong!',
-            in: ['body'],
-            isLength: {
-                errorMessage: 'First Name should be at least 2 chars long',
-                options: { min: 2 },
-            },
-        },
-        last_name: {
-            errorMessage: 'Last Name is wrong!',
-            in: ['body'],
-            isLength: {
-                errorMessage: 'Last Name should be at least 2 chars long',
-                options: { min: 2 },
-            },
-        },
-    },
+    // create: {
+    //     first_name: {
+    //         errorMessage: 'First Name is wrong!',
+    //         in: ['body'],
+    //         isLength: {
+    //             errorMessage: 'First Name should be at least 2 chars long',
+    //             options: { min: 2 },
+    //         },
+    //     },
+    //     last_name: {
+    //         errorMessage: 'Last Name is wrong!',
+    //         in: ['body'],
+    //         isLength: {
+    //             errorMessage: 'Last Name should be at least 2 chars long',
+    //             options: { min: 2 },
+    //         },
+    //     },
+    // },
 
     delete: {
         id: {

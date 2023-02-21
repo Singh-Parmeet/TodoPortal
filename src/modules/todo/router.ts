@@ -71,6 +71,15 @@ router.route('/')
         validationHandler(validation.list as any),
         controller.list,
     );
+
+router.route('/cron')
+    .get(
+        controller.cron,
+    );
+router.route('/streams')
+    .get(
+        controller.streams,
+    );
 /**
  * @swagger
  * /api/todo/{id}:

@@ -1,7 +1,19 @@
+import { Schema } from 'mongoose';
 import BaseSchema from '../../../libs/BaseRepo/BaseSchema';
 
 export default class UserSchema extends BaseSchema {
     constructor(options: any) {
+        const List = new Schema({
+            title: {
+                type: String,
+            },
+            description: {
+                type: String,
+            },
+            status: {
+                type: String,
+            },
+        });
         const baseSchema = {
             first_name: {
                 type: String,
@@ -15,6 +27,7 @@ export default class UserSchema extends BaseSchema {
             password: {
                 type: String,
             },
+            todoList: [List],
         };
         super(baseSchema, options);
     }

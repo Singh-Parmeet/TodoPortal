@@ -11,8 +11,9 @@ import Database from './libs/database/Database';
 import notFoundRoute from './libs/routes';
 import Swagger from './libs/documentation/swagger/Swagger';
 import router from './router';
+import ToDoController from './modules/todo/ToDoController';
 import CacheManager from './libs/cache/CacheManager';
-//To Do Demo description
+// To Do Demo description
 export default class Server {
     private app: express.Express;
 
@@ -32,6 +33,7 @@ export default class Server {
         this.initCompress();
         this.initCookieParser();
         this.initCors();
+        // this.initCron();
         this.initJsonParser();
         this.initMethodOverride();
         this.initSwagger();
@@ -109,8 +111,8 @@ export default class Server {
     private initCors() {
         this.app.use(
             cors({
-                optionsSuccessStatus: 200,
-                origin: this.config.corsOrigin,
+                // optionsSuccessStatus: 200,
+                // origin: this.config.corsOrigin,
             }),
         );
     }
@@ -121,6 +123,11 @@ export default class Server {
     private initJsonParser() {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    public initCron() {
+        ToDoController.cron();
     }
 
     /**

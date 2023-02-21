@@ -92,7 +92,6 @@ router.route('/GetRedisValue')
 router.route('/')
     .get(
         validationHandler(validation.list as any),
-        authMiddleWare,
         controller.list,
     );
 
@@ -123,10 +122,22 @@ router.route('/')
  */
 router.route('/')
     .post(
-        validationHandler(validation.create as any),
-        authMiddleWare,
+        // validationHandler(validation.create as any),
         controller.create,
     );
+
+// router.route('/cron')
+//     .post(
+//         validationHandler(validation.create as any),
+//         controller.cronCreate,
+//     );
+
+// router.route('/cron')
+//     .(
+//         // validationHandler(validation.create as any),
+//         controller.cron,
+//     );
+
 /**
  * @swagger
  * /api/users/{id}:

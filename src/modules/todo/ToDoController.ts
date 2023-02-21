@@ -1,6 +1,13 @@
+/* eslint-disable consistent-return */
+import * as cron from 'node-cron';
+import { pipeline, Readable, Writable } from 'stream';
+import * as path from 'path';
+import * as fs from 'fs';
+import * as archiver from 'archiver';
 import { SystemResponse } from '../../libs/response-handler';
 import IToDo from './IToDo';
 import { Nullable } from '../../libs/nullable';
+import ToDoService from './ToDoService';
 
 class ToDoController {
     private static instance;
@@ -103,6 +110,37 @@ class ToDoController {
             return res.send(SystemResponse.internalServerError);
         }
     };
+
+    // eslint-disable-next-line class-methods-use-this
+    public async cron(req, res) {
+        const todoService = new ToDoService();
+        try {
+            console.log('Job Cron :: Start');
+            cron.schedule('* * * * *', async () => {
+                const updatedList = await todoService.list(0, 0);
+                console.log('List----->', updatedList);
+                return res.send(SystemResponse.success('UPdated list', updatedList));
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    public async streams() {
+        try {
+            const readableStream = fs.createReadStream('image/Image_created_with_a_mobile_phone.png.webp');
+            const writeableStream = fs.createWriteStream('profileImage/profile.png');
+
+
+            pipeline(readableStream, writeableStream, (err) => {
+                console.error(err);
+            });
+            return console.log('Completed');
+        } catch (err) {
+            console.log(err);
+        }
+    }
 }
 
 export default ToDoController.getInstance();

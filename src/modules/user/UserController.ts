@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import * as bcrypt from 'bcrypt';
 import { SystemResponse } from '../../libs/response-handler';
 import IUser from './IUser';
@@ -7,6 +8,7 @@ import patternMatecherhelper from './helper/PatternMatecherHelper';
 import * as constants from '../../config/constants';
 import { Services } from '../../services/constants';
 import { NotificationService } from '../../config/constants';
+import UserService from './UserService';
 
 class UserController {
     private static instance;
@@ -21,13 +23,14 @@ class UserController {
 
     // eslint-disable-next-line class-methods-use-this
     public list = async (req, res, next): Promise<IUser[]> => {
-        const { locals: { logger }, services } = res;
-        const { moduleService } = services;
+        const { locals: { logger } } = res;
+        const userService = new UserService();
+        // const { moduleService } = services;
         try {
             const { limit, skip } = req.query;
 
             // for user service - fetch
-            const result = await moduleService.list(limit, skip);
+            const result = await userService.list(limit, skip);
             if (!result.length) {
                 logger.debug({ message: 'Data not found', option: [], data: [] });
 
@@ -43,18 +46,22 @@ class UserController {
 
     // eslint-disable-next-line class-methods-use-this
     public create = async (req, res) => {
-        const { locals: { logger }, services } = res;
-        const { moduleService } = services;
+        const { locals: { logger } } = res;
+        const userService = new UserService();
+        // const todoService = new ToDoService();
         try {
+            // const updatedList = await todoService.list(1, 1);
+            // console.log('---->', updatedList);
             const {
-                email, password, first_name: firstName, last_name: lastName,
+                email, password, first_name: firstName, last_name: lastName, todoList,
             } = req.body;
-            const hashPassword = await bcrypt.hash(password, constants.BCRYPT_SALT_ROUNDS);
-            const result = await moduleService.create({
+            // const hashPassword = await bcrypt.hash(password, constants.BCRYPT_SALT_ROUNDS);
+            const result = await userService.create({
                 email,
-                password: hashPassword,
+                password,
                 first_name: firstName,
                 last_name: lastName,
+                todoList,
             });
             logger.info({ messgae: 'User Created Successfully', data: [], option: [] });
             return res.send(SystemResponse.success('User created', result));
