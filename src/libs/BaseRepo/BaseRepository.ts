@@ -1,13 +1,14 @@
 import * as mongoose from 'mongoose';
-import { IQueryBaseUpdate, IQueryUpdate } from '../../modules/todo/entities';
 import {
-    IQueryBaseCreate,
+    IQueryBaseUpdate, IQueryUpdate, IQueryBaseCreate,
     IQueryBaseDelete,
-} from '../../modules/user/entities';
+} from '../../modules/todo/entities';
+// import {
+//     IQueryBaseCreate,
+//     IQueryBaseDelete,
+// } from '../../modules/todo/entities';
 
-export default class BaseRepository <
-D extends mongoose.Document, M extends mongoose.Model<D>
-> {
+export default class BaseRepository <D extends mongoose.Document, M extends mongoose.Model<D>> {
     public static generateObjectId() {
         return String(new mongoose.Types.ObjectId());
     }

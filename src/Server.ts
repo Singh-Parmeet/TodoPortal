@@ -4,16 +4,13 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as methodOverride from 'method-override';
 import { errorHandler } from './libs/response-handler';
-import { createLogger, enableLoggerInstance, enableDebugger } from './libs/logger';
-import loggerConfig from './config/LoggerConfig';
 import { EnvVars } from './config/constants';
 import Database from './libs/database/Database';
 import notFoundRoute from './libs/routes';
 import Swagger from './libs/documentation/swagger/Swagger';
 import router from './router';
 import ToDoController from './modules/todo/ToDoController';
-import CacheManager from './libs/cache/CacheManager';
-// To Do Demo description
+
 export default class Server {
     private app: express.Express;
 
@@ -29,7 +26,7 @@ export default class Server {
     }
 
     public bootstrap() {
-        this.initLogger();
+        // this.initLogger();
         this.initCompress();
         this.initCookieParser();
         this.initCors();
@@ -156,17 +153,17 @@ export default class Server {
         this.app.use(swaggerUrl, serve, setup);
     }
 
-    private initLogger = () => {
-        try {
-            this.logInstance = createLogger.createLogInstance(loggerConfig);
-            this.app.use(
-                enableLoggerInstance(this.logInstance, [
-                    { location: 'headers', key: 'x-trace-id' },
-                ]),
-            );
-            enableDebugger(this.application, this.logInstance);
-        } catch (err) {
-            throw new Error(err);
-        }
-    };
+    // private initLogger = () => {
+    //     try {
+    //         this.logInstance = createLogger.createLogInstance(loggerConfig);
+    //         this.app.use(
+    //             enableLoggerInstance(this.logInstance, [
+    //                 { location: 'headers', key: 'x-trace-id' },
+    //             ]),
+    //         );
+    //         enableDebugger(this.application, this.logInstance);
+    //     } catch (err) {
+    //         throw new Error(err);
+    //     }
+    // };
 }

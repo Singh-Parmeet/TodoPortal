@@ -12,6 +12,8 @@ export default class Database {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 autoIndex: false,
+                bufferCommands: false, // disables command buffering
+                // bufferTimeoutMS: 100000,
             };
             let connectionString = null;
             if (mongoUri) {

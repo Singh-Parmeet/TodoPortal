@@ -37,8 +37,8 @@ class ToDoRepository extends BaseRepository<IToDoModel,
         return super.update(options, itemsToUpdate);
     }
 
-    public async delete(query: IQueryDelete): Promise<mongoose.UpdateQuery<IToDoModel>> {
-        return super.delete({ id: query.id });
-    }
+    // public async delete(query: IQueryDelete): Promise<mongoose.UpdateQuery<IToDoModel>> {
+    //     return super.delete({ query });
+    // }
 }
 export default ToDoRepository;

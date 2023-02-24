@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import IToDo from './IToDo';
 import ToDoRepository from './repository/ToDoRepository';
 
@@ -26,12 +25,12 @@ class ToDoService {
         return this.todoRepository.update(option, query);
     }
 
-    public async delete(query): Promise<mongoose.UpdateQuery<IToDo>> {
-        const { id } = query;
-        return this.todoRepository.delete({
-            id,
-        });
-    }
+    // public async delete(query): Promise<mongoose.UpdateQuery<IToDo>> {
+    //     const { id } = query;
+    //     return this.todoRepository.delete({
+    //         id,
+    //     });
+    // }
 }
 
 export default ToDoService;

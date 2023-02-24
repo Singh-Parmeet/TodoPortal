@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import { Router } from 'express';
+import { fork } from 'child_process';
 import validationHandler from '../../libs/validationHandler';
 import controller from './ToDoController';
 import validation from './validation';
@@ -72,14 +73,14 @@ router.route('/')
         controller.list,
     );
 
-router.route('/cron')
-    .get(
-        controller.cron,
-    );
-router.route('/streams')
-    .get(
-        controller.streams,
-    );
+// router.route('/cron')
+//     .get(
+//         controller.cron,
+//     );
+// router.route('/streams')
+//     .get(
+//         controller.streams,
+//     );
 /**
  * @swagger
  * /api/todo/{id}:
@@ -136,6 +137,16 @@ router.route('/')
         validationHandler(validation.create as any),
         controller.create,
     );
+
+router.post('/', (req, res) => {
+    const data1 = req.body;
+    const create = fork('dist/src/modules/todo/ToDoChild.js');
+    create.send(data1);
+    create.on('message', (data) => {
+        console.log('------------------>', data);
+        return res.send(data);
+    });
+});
 
 /**
  * @swagger
