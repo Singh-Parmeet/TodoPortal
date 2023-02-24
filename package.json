@@ -28,15 +28,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/squad-hub/js-express-boilerplate.git"
+    "url": "git+https://github.com/Singh-Parmeet/TodoPortal.git"
   },
   "keywords": [],
   "author": "Successive Technologies",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/squad-hub/js-express-boilerplate.git/issues"
+    "url": "https://github.com/Singh-Parmeet/TodoPortal.git/issues"
   },
-  "homepage": "https://github.com/squad-hub/js-express-boilerplate.git#readme",
+  "homepage": "https://github.com/Singh-Parmeet/TodoPortal.git#readme",
   "dependencies": {
     "@types/jest": "27.4.0",
     "archiver": "^5.3.1",
