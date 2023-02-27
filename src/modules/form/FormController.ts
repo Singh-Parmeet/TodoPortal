@@ -7,14 +7,6 @@ import { SystemResponse } from '../../libs/response-handler';
 // import FormModel from './repository/FormModel';
 import FormRepository from './repository/FormRepository';
 
-// process.on('message', (data) => {
-//     const formRepository = new FormRepository();
-//     console.log('req---->', data);
-//     const values = data;
-//     const result = formRepository.create1(values);
-//     process.send(SystemResponse.success('Record Added Succefully', result));
-// });
-
 class FormController {
     private static instance;
 
@@ -30,9 +22,11 @@ class FormController {
         const formRepository = new FormRepository();
         try {
             const { limit, skip } = req.query;
+            console.log('limit and skip', limit, skip);
             const result = await formRepository.list(
-                limit,
-                skip,
+                {},
+                {},
+                { limit, skip },
             );
             return res.send(SystemResponse.success('List of ToDo ', result));
         } catch (err) {
